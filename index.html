@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <title>Frontend Mentor | Age calculator app</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+  <script>
+    function calculateAge() {
+      var day = parseInt(document.getElementById("day").value);
+      var month = parseInt(document.getElementById("month").value);
+      var year = parseInt(document.getElementById("year").value);
+
+      var birthDate = new Date(year, month - 1, day);
+      var today = new Date();
+
+      var ageInMilliseconds = today - birthDate;
+      var ageDate = new Date(ageInMilliseconds);
+
+      var years = ageDate.getUTCFullYear() - 1970;
+      var months = ageDate.getUTCMonth();
+      var days = ageDate.getUTCDate() - 1;
+
+      document.getElementById("years").textContent = years || "--";
+      document.getElementById("months").textContent = months || "--";
+      document.getElementById("days").textContent = days || "--";
+    }
+  </script>
+</head>
+<body>
+  <div class="module">
+    <form>
+      <div class="form-col">
+        <label for="day">Day</label>
+        <input type="number" id="day" name="day" min="1" max="31" placeholder="DD" required>
+      </div>
+      <div class="form-col">
+        <label for="month">Month</label>
+        <input type="number" id="month" name="month" min="1" max="12" placeholder="MM" required>
+      </div>
+      <div class="form-col">
+        <label for="year">Year</label>
+        <input type="number" id="year" name="year" min="1920" max="2023" placeholder="YYYY" required>
+      </div>
+    </form>
+    <div class="divider">
+      <div class="arrow">
+        <img src="assets/images/icon-arrow.svg" alt="">
+      </div>
+    </div>
+    <div class="results">
+      <h1><span class="color-purple" id="years">--</span> years</h1>
+      <h1><span class="color-purple" id="months">--</span> months</h1>
+      <h1><span class="color-purple" id="days">--</span> days</h1>
+    </div>
+  </div>
+  
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="cbwd.org" target="_blank">Charlie</a>.
+  </div>
+  <script>
+    var inputs = document.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', calculateAge);
+    }
+  </script>
+</body>
+</html>
