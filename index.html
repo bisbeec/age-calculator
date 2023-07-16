@@ -9,50 +9,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400;1,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
-  <script>
-    function calculateAge() {
-      var day = parseInt(document.getElementById("day").value);
-      var month = parseInt(document.getElementById("month").value);
-      var year = parseInt(document.getElementById("year").value);
-
-      var birthDate = new Date(year, month - 1, day);
-      var today = new Date();
-
-      var ageInMilliseconds = today - birthDate;
-      var ageDate = new Date(ageInMilliseconds);
-
-      var years = ageDate.getUTCFullYear() - 1970;
-      var months = ageDate.getUTCMonth();
-      var days = ageDate.getUTCDate() - 1;
-
-      document.getElementById("years").textContent = years || "--";
-      document.getElementById("months").textContent = months || "--";
-      document.getElementById("days").textContent = days || "--";
-    }
-  </script>
 </head>
 <body>
   <div class="module">
-    <form>
+
+    <div class="inputs">
       <div class="form-col">
         <label for="day">Day</label>
         <input type="number" id="day" name="day" min="1" max="31" placeholder="DD" required>
+        <span class="required">This field is required</span>
       </div>
       <div class="form-col">
         <label for="month">Month</label>
         <input type="number" id="month" name="month" min="1" max="12" placeholder="MM" required>
+        <span class="required">This field is required</span>
       </div>
       <div class="form-col">
         <label for="year">Year</label>
         <input type="number" id="year" name="year" min="1920" max="2023" placeholder="YYYY" required>
-      </div>
-    </form>
-    <div class="divider">
-      <div class="arrow">
-        <img src="assets/images/icon-arrow.svg" alt="">
+        <span class="required">This field is required</span>
       </div>
     </div>
-    <div class="results">
+    <div class="divider">
+      <button class="arrow-button" onclick="calculateAge()">
+        <img src="assets/images/icon-arrow.svg" alt="">
+      </button>
+    </div>
+
+    <div class="results" id="result">
       <h1><span class="color-purple" id="years">--</span> years</h1>
       <h1><span class="color-purple" id="months">--</span> months</h1>
       <h1><span class="color-purple" id="days">--</span> days</h1>
@@ -63,11 +47,68 @@
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
     Coded by <a href="https://cbwd.org" target="_blank">Charlie</a>.
   </div>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    var inputs = document.querySelectorAll('input');
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener('input', calculateAge);
+
+    $("button").click(function() {
+      $(this).addClass("active");
+    })
+
+
+    var dayInput = document.getElementById("day");
+    var monthInput = document.getElementById("month");
+    var yearInput = document.getElementById("year");
+
+    function calculateAge() {
+      var day = parseInt(dayInput.value);
+      var month = parseInt(monthInput.value);
+      var year = parseInt(yearInput.value);
+      
+      var requiredSpans = document.getElementsByClassName("required");
+      for (var i = 0; i < requiredSpans.length; i++) {
+        requiredSpans[i].style.display = "none";
+      }
+      
+      var labelElements = document.getElementsByTagName("label");
+      for (var j = 0; j < labelElements.length; j++) {
+        labelElements[j].classList.remove("error-label");
+      }
+      
+      if (!day || !month || !year) {
+        for (var k = 0; k < requiredSpans.length; k++) {
+          if (!requiredSpans[k].previousElementSibling.value) {
+            requiredSpans[k].style.display = "inline";
+            requiredSpans[k].previousElementSibling.classList.add("error");
+            requiredSpans[k].previousElementSibling.previousElementSibling.classList.add("error-label");
+          } else {
+            requiredSpans[k].previousElementSibling.classList.remove("error");
+          }
+        }
+        return;
+      }
+      
+      var today = new Date();
+      var birthdateObj = new Date(year, month - 1, day);
+      
+      var ageInMilliseconds = today - birthdateObj;
+      var ageDate = new Date(ageInMilliseconds);
+      
+      var years = ageDate.getUTCFullYear() - 1970;
+      var months = ageDate.getUTCMonth();
+      var days = ageDate.getUTCDate() - 1;
+      
+      var resultValueSpans = document.getElementsByClassName("result-value");
+      for (var k = 0; k < resultValueSpans.length; k++) {
+        resultValueSpans[k].textContent = "--";
+      }
+      
+      document.getElementById("result").innerHTML = `
+        <h1><span class="color-purple" id="years">${years}</span> years</h1>
+        <h1><span class="color-purple" id="months">${months}</span> months</h1>
+        <h1><span class="color-purple" id="days">${days}</span> days</h1>
+      `;
     }
+
   </script>
 </body>
 </html>
